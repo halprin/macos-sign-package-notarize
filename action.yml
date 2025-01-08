@@ -36,4 +36,4 @@ runs:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
     - name: Sign, Package, and Notarize
       shell: bash
-      run: ./stamp.sh "${{ inputs.path-to-binary }}" "${{ inputs.signing-identity }}" "${{ inputs.apple-id }}" "${{ inputs.app-specific-password }}" "${{ inputs.apple-developer-team-id }}" "${{ inputs.extra-files }}" "${{ inputs.archive-disk-name }}" ${{ inputs.archive-file-path }}
+      run: stamp.sh "${{ inputs.path-to-binary }}" "${{ inputs.signing-identity }}" "${{ inputs.apple-id }}" "${{ inputs.app-specific-password }}" "${{ inputs.apple-developer-team-id }}" "${{ inputs.extra-files }}" "${{ inputs.archive-disk-name }}" ${{ inputs.archive-file-path }}
