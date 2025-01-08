@@ -1,0 +1,39 @@
+name: macOS Sign, Package, and Notarize
+author: halprin
+description: Signs, package into a DMG, and notarize macOS binaries.
+inputs:
+  path-to-binary:
+    description: Path to the binary to sign, package, and notarize.
+    required: true
+  signing-identity:
+    description: The signing certificate identity used to sign the binary and DMG.
+    required: true
+  apple-id:
+    description: The Apple ID to login for notarization.
+    required: true
+  app-specific-password:
+    description: The app-specific password used for the Apple ID for notarization.
+    required: true
+  apple-developer-team-id:
+    description: The Apple developer team ID used in notarization.
+    required: true
+  extra-files:
+    description: Space deliminated extra files to include in the DMG in addition to the binary.
+    required: true
+  archive-disk-name:
+    description: The name of the DMG disk volume.
+    required: true
+  archive-file-path:
+    description: The path where the DMG disk file is written.
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Set GitHub Action Path
+      run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+      shell: bash
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
+    - name: Sign, Package, and Notarize
+      shell: bash
+      run: ./stamp.sh "${{ inputs.path-to-binary }}" "${{ inputs.signing-identity }}" "${{ inputs.apple-id }}" "${{ inputs.app-specific-password }}" "${{ inputs.apple-developer-team-id }}" "${{ inputs.extra-files }}" "${{ inputs.archive-disk-name }}" ${{ inputs.archive-file-path }}
