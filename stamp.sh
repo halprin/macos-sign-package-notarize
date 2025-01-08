@@ -16,13 +16,13 @@ echo ""
 echo "# Stamping (signing, archiving, and notarizing) binary $PATH_TO_BINARY for distribution"
 echo ""
 
-./_sign.sh "$PATH_TO_BINARY" "$SIGNING_IDENTITY"
+_sign.sh "$PATH_TO_BINARY" "$SIGNING_IDENTITY"
 
-./_archive.sh "$PATH_TO_BINARY" "$EXTRA_FILES" "$ARCHIVE_DISK_NAME" "$ARCHIVE_FILE_PATH"
+_archive.sh "$PATH_TO_BINARY" "$EXTRA_FILES" "$ARCHIVE_DISK_NAME" "$ARCHIVE_FILE_PATH"
 
-./_sign.sh "$ARCHIVE_FILE_PATH" "$SIGNING_IDENTITY"
+_sign.sh "$ARCHIVE_FILE_PATH" "$SIGNING_IDENTITY"
 
-./_notorize.sh "$ARCHIVE_FILE_PATH" "$APPLE_ID" "$APP_SPECIFIC_PASSWORD" "$APPLE_DEVELOPER_TEAM_ID"
+_notorize.sh "$ARCHIVE_FILE_PATH" "$APPLE_ID" "$APP_SPECIFIC_PASSWORD" "$APPLE_DEVELOPER_TEAM_ID"
 
 echo ""
 echo ""
