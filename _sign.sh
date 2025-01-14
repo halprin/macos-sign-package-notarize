@@ -10,4 +10,7 @@ echo ""
 echo "## Code signing file $PATH_TO_FILE_TO_SIGN with signing identity $SIGNING_IDENTITY"
 echo ""
 
-codesign --verbose --sign "$SIGNING_IDENTITY" --force --timestamp -o runtime "$PATH_TO_FILE_TO_SIGN"
+# Evaluates the \ escaped spaces so we correctly detect multiple files.
+eval "set -- $PATH_TO_FILE_TO_SIGN"
+
+codesign --verbose --sign "$SIGNING_IDENTITY" --force --timestamp -o runtime "$@"

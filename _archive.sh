@@ -22,7 +22,9 @@ echo ""
 echo "## Copying binary $PATH_TO_BINARY to $ARCHIVE_PATH"
 echo ""
 
-ditto "$PATH_TO_BINARY" "$ARCHIVE_PATH"
+# Evaluates the \ escaped spaces so we correctly detect multiple files.
+eval "set -- $PATH_TO_BINARY"
+ditto "$@" "$ARCHIVE_PATH"
 
 echo ""
 echo ""
