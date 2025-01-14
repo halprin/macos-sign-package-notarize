@@ -14,6 +14,8 @@ This GitHub Action requires a macOS runner.
 
 ## Usage
 
+If you're using an app-specific password to authenticate...
+
 ```yaml
 - uses: halprin/macos-sign-package-notarize@v1
   with:
@@ -27,9 +29,24 @@ This GitHub Action requires a macOS runner.
     archive-file-path: ./my-macos-program.dmg
 ```
 
+If you're using an App Store Connect key to authenticate...
+
+```yaml
+- uses: halprin/macos-sign-package-notarize@v1
+  with:
+    path-to-binary: ./evn-pilot-conversion
+    signing-identity: ${{ secrets.SIGNING_IDENTITY }}
+    app-store-connect-key: ${{ secrets.APP_STORE_CONNECT_KEY }}
+    app-store-connect-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+    app-store-connect-issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+    extra-files: README.md LICENSE
+    archive-disk-name: My macOS Program
+    archive-file-path: ./my-macos-program.dmg
+```
+
 Descriptions for these inputs are in [`action.yml`](action.yml).
 
-Use GitHub secrets for the `app-specific-password` input!  The `app-specific-password` value is sensitive and must not be revealed.
+Use GitHub secrets for the `app-specific-password` and `app-store-connect-key` inputs!  These values are sensitive and must not be revealed.
 
 ## Other Useful Actions
 

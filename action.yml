@@ -9,14 +9,23 @@ inputs:
     description: The signing certificate identity used to sign the binary and DMG.
     required: true
   apple-id:
-    description: The Apple ID to login for notarization.
-    required: true
+    description: The Apple ID to login for notarization.  This and the next two inputs are required together, or app-store-connect-key and its next two inputs are required together.
+    required: false
   app-specific-password:
-    description: The app-specific password used for the Apple ID for notarization.
-    required: true
+    description: The app-specific password used for the Apple ID for notarization.  This is a secret; make sure to pass in the value using GitHub Actions' secret functionality!
+    required: false
   apple-developer-team-id:
     description: The Apple developer team ID used in notarization.
-    required: true
+    required: false
+  app-store-connect-key:
+    description: The base64 encoded version of the .p8 file from App Store Connect.  For notarization.  This and the next two inputs are required together, or apple-id and its next two inputs are required together.  This is a secret; make sure to pass in the value using GitHub Actions' secret functionality!
+    required: false
+  app-store-connect-key-id:
+    description: The key ID assigned to the key from App Store Connect.  For notarization.
+    required: false
+  app-store-connect-issuer-id:
+    description: The issuer ID assigned to your integrations in App Store Connect.  For notarization.
+    required: false
   extra-files:
     description: Space deliminated extra files to include in the DMG in addition to the binary.
     required: true
@@ -26,17 +35,35 @@ inputs:
   archive-file-path:
     description: The path where the DMG disk file is written.
     required: true
+
+
 runs:
   using: "composite"
   steps:
+
     - name: Set GitHub Action Path
       run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
       shell: bash
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
+
     - name: Sign, Package, and Notarize
       shell: bash
-      run: stamp.sh "${{ inputs.path-to-binary }}" "${{ inputs.signing-identity }}" "${{ inputs.apple-id }}" "${{ inputs.app-specific-password }}" "${{ inputs.apple-developer-team-id }}" "${{ inputs.extra-files }}" "${{ inputs.archive-disk-name }}" ${{ inputs.archive-file-path }}
+      run: stamp.sh
+      env:
+        PATH_TO_BINARY: ${{ inputs.path-to-binary }}
+        SIGNING_IDENTITY: ${{ inputs.signing-identity }}
+        APPLE_ID: ${{ inputs.apple-id }}
+        APP_SPECIFIC_PASSWORD: ${{ inputs.app-specific-password }}
+        APPLE_DEVELOPER_TEAM_ID: ${{ inputs.apple-developer-team-id }}
+        APP_STORE_CONNECT_KEY: ${{ inputs.app-store-connect-key }}
+        APP_STORE_CONNECT_KEY_ID: ${{ inputs.app-store-connect-key-id }}
+        APP_STORE_CONNECT_ISSUER_ID: ${{ inputs.app-store-connect-issuer-id }}
+        EXTRA_FILES: ${{ inputs.extra-files }}
+        ARCHIVE_DISK_NAME: ${{ inputs.archive-disk-name }}
+        ARCHIVE_FILE_PATH: ${{ inputs.archive-file-path }}
+
+
 branding:
   icon: award
   color: purple
