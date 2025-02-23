@@ -3,8 +3,8 @@
 Sign, package, and notarize macOS binaries.
 
 This action will...
-1. Sign the specified binary.
-2. Put the signed binary, along with any extra files, into a DMG disk image.
+1. Sign the specified binaries.
+2. Put the specified files into a DMG disk image.
 3. Sign the DMG disk image.
 4. Notarize the DMG disk image.
 
@@ -17,14 +17,14 @@ This GitHub Action requires a macOS runner.
 If you're using an app-specific password to authenticate...
 
 ```yaml
-- uses: halprin/macos-sign-package-notarize@v1
+- uses: halprin/macos-sign-package-notarize@v2
   with:
-    path-to-binary: ./evn-pilot-conversion
+    path-to-binaries: ./path/to/binary1 ./another\ path/to/binary2
     signing-identity: ${{ secrets.SIGNING_IDENTITY }}
     apple-id: ${{ secrets.APPLE_ID }}
     app-specific-password: ${{ secrets.APP_SPECIFIC_PASSWORD }}
     apple-developer-team-id: ${{ secrets.APPLE_DEVELOPER_TEAM_ID }}
-    extra-files: README.md LICENSE
+    archive-files: ./path/to/binary1 ./another\ path/to/binary2 README.md LICENSE
     archive-disk-name: My macOS Program
     archive-file-path: ./my-macos-program.dmg
 ```
@@ -32,14 +32,14 @@ If you're using an app-specific password to authenticate...
 If you're using an App Store Connect key to authenticate...
 
 ```yaml
-- uses: halprin/macos-sign-package-notarize@v1
+- uses: halprin/macos-sign-package-notarize@v2
   with:
-    path-to-binary: ./evn-pilot-conversion
+    path-to-binaries: ./path/to/binary1 ./another\ path/to/binary2
     signing-identity: ${{ secrets.SIGNING_IDENTITY }}
     app-store-connect-key: ${{ secrets.APP_STORE_CONNECT_KEY }}
     app-store-connect-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
     app-store-connect-issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-    extra-files: README.md LICENSE
+    archive-files: ./path/to/binary1 ./another\ path/to/binary2 README.md LICENSE
     archive-disk-name: My macOS Program
     archive-file-path: ./my-macos-program.dmg
 ```
@@ -47,6 +47,12 @@ If you're using an App Store Connect key to authenticate...
 Descriptions for these inputs are in [`action.yml`](action.yml).
 
 Use GitHub secrets for the `app-specific-password` and `app-store-connect-key` inputs!  These values are sensitive and must not be revealed.
+
+`app-store-connect-key` is supplied from a file you download from App Store Connect.  Run the following to get the value stored into the clipboard and ready for pasting into your GitHub Action secrets.
+
+```shell
+base64 -i ./AuthKey.p8 | pbcopy
+```
 
 ## Other Useful Actions
 
