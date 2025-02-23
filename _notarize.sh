@@ -22,9 +22,13 @@ if [ -n "$APP_STORE_CONNECT_KEY" ]; then
 
     echo "$APP_STORE_CONNECT_KEY" | base64 --decode -o ./app_store_connect_key_file.p8
 
+    set +e  # don't fail if the xcrun command fails because we want to delete the app_store_connect_key_file.p8 file.
+
     xcrun notarytool submit "$PATH_TO_FILE_TO_NOTARIZE" --key ./app_store_connect_key_file.p8 --key-id "$APP_STORE_CONNECT_KEY_ID" --issuer "$APP_STORE_CONNECT_ISSUER_ID" --wait
 
     rm ./app_store_connect_key_file.p8
+
+    set -e  # re-enable failing when a command fails now that we deleted the app_store_connect_key_file.p8 file.
 else
     echo ""
     echo ""

@@ -2,10 +2,9 @@
 
 set -e
 
-PATH_TO_BINARY=$1
-EXTRA_FILES=$2
-ARCHIVE_DISK_NAME=$3
-ARCHIVE_FILE_PATH=$4
+ARCHIVE_FILES=$1
+ARCHIVE_DISK_NAME=$2
+ARCHIVE_FILE_PATH=$3
 
 ARCHIVE_PATH="/tmp/$ARCHIVE_DISK_NAME"
 
@@ -19,19 +18,16 @@ mkdir -p "$ARCHIVE_PATH"
 
 echo ""
 echo ""
-echo "## Copying binary $PATH_TO_BINARY to $ARCHIVE_PATH"
+echo "## Copying files $ARCHIVE_FILES to $ARCHIVE_PATH"
 echo ""
 
 # Evaluates the \ escaped spaces so we correctly detect multiple files.
-eval "set -- $PATH_TO_BINARY"
-ditto "$@" "$ARCHIVE_PATH"
+eval "set -- $ARCHIVE_FILES"
 
-echo ""
-echo ""
-echo "## Copying files $EXTRA_FILES to $ARCHIVE_PATH"
-echo ""
-
-ditto $EXTRA_FILES "$ARCHIVE_PATH"
+for CURRENT_FILE in "$@"; do
+    echo "Copying file: $CURRENT_FILE"
+    ditto "$CURRENT_FILE" "$ARCHIVE_PATH/$(basename "$CURRENT_FILE")"
+done
 
 echo ""
 echo ""

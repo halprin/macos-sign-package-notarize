@@ -2,8 +2,8 @@ name: macOS Sign, Package, and Notarize
 author: halprin
 description: Signs, package into a DMG, and notarize macOS binaries.
 inputs:
-  path-to-binary:
-    description: Path to the binary to sign, package, and notarize.
+  path-to-binaries:
+    description: Path to the binaries to sign.
     required: true
   signing-identity:
     description: The signing certificate identity used to sign the binary and DMG.
@@ -26,8 +26,8 @@ inputs:
   app-store-connect-issuer-id:
     description: The issuer ID assigned to your integrations in App Store Connect.  For notarization.
     required: false
-  extra-files:
-    description: Space deliminated extra files to include in the DMG in addition to the binary.
+  archive-files:
+    description: Space deliminated files to include in the DMG.
     required: true
   archive-disk-name:
     description: The name of the DMG disk volume.
@@ -51,7 +51,7 @@ runs:
       shell: bash
       run: stamp.sh
       env:
-        PATH_TO_BINARY: ${{ inputs.path-to-binary }}
+        PATH_TO_BINARIES: ${{ inputs.path-to-binaries }}
         SIGNING_IDENTITY: ${{ inputs.signing-identity }}
         APPLE_ID: ${{ inputs.apple-id }}
         APP_SPECIFIC_PASSWORD: ${{ inputs.app-specific-password }}
@@ -59,7 +59,7 @@ runs:
         APP_STORE_CONNECT_KEY: ${{ inputs.app-store-connect-key }}
         APP_STORE_CONNECT_KEY_ID: ${{ inputs.app-store-connect-key-id }}
         APP_STORE_CONNECT_ISSUER_ID: ${{ inputs.app-store-connect-issuer-id }}
-        EXTRA_FILES: ${{ inputs.extra-files }}
+        ARCHIVE_FILES: ${{ inputs.archive-files }}
         ARCHIVE_DISK_NAME: ${{ inputs.archive-disk-name }}
         ARCHIVE_FILE_PATH: ${{ inputs.archive-file-path }}
 
